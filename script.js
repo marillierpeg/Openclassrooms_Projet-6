@@ -31,7 +31,7 @@ function best_movie() {
 function defined_category(category_name, classe) {
     //Fonction qui affiche les 6 meilleurs films d'une catégroie donnée
 
-    // let titre = document.querySelector("h2")
+    // let titre = document.querySelector(classe + "h2")
     fetch(sortedByGenre_url + category_name)
         .then(response => response.json())
         .then(data => {
@@ -41,15 +41,16 @@ function defined_category(category_name, classe) {
                 img.alt = "image"
                 document.querySelector(classe).appendChild(img)
             }
+            
         })
 }
 
 
-function get_all_categories() {
+async function get_all_categories() {
     //Fonction qui récupère et retourne la liste de toutes les catégories de films
 
-    liste_genres = []
-    fetch("http://localhost:8000/api/v1/genres")
+    let liste_genres = []
+    await fetch("http://localhost:8000/api/v1/genres")
         .then(response => response.json())
         .then(data => {
             let url = "http://localhost:8000/api/v1/genres/?page_size="
@@ -59,51 +60,84 @@ function get_all_categories() {
                 .then(data => {
                     for(i=0; i<nb_genre; i++) {
                         let genre = data.results[i].name
+                        console.log("---" + data.results[i] + "---" + data.results[i].name)
                         liste_genres.push(genre)
                     }
                 })
         })
+    console.log(liste_genres)
+    console.log(liste_genres.length)
+    console.log(liste_genres[5])
+    console.log("---")
+
     return liste_genres
+}
+
+async function create_dropdown_menu() {
+    let categories = await get_all_categories()
+    console.log(categories)
+    console.log(categories.length)
+    console.log(categories[5])
+    console.log("---")
+    let truc = ["a","b","c"]
+    for(i=0; i<50; i++) {
+        truc.push(`${i}`)
+    }
+    console.log(truc)
+    console.log(truc.length)
+    console.log(truc[2])
+    console.log("---")
+    let selection = document.getElementById("categories")
+    console.log(selection.innerHTML)
+    for(i=0; i<categories.length; i++) {
+        let options = `<option value="">${categories[i]}</option>`
+        selection.innerHTML += options
+        console.log(categories[i])
+    }
+    console.log("---")
+    console.log(selection.innerHTML)
 }
 
 function get_user_choice(){
     //Fonction qui récupère le choix de l'utilisateur dans le menu déroulant
 
-    let selectElement = document.getElementById("categories");
-    let valeurselectionnee = selectElement.options[selectElement.selectedIndex].value;
-    // let textselectionne = selectElement.options[selectElement.selectedIndex].text;
-    console.log(valeurselectionnee)
-    return valeurselectionnee
+    let select = document.getElementById("categories")
+    let choice = select.selectedIndex  // Récupération de l'index du <option> choisi
+    let user_choice = select.options[choice].text
+    return user_choice
 }
 
- function chosen_category() {
+function chosen_category() {
     // Fonction qui affiche les 6 meilleurs films de la catégorie de films
     // choisie par l'utilisateur via le menu déroulant
-
-    let category = get_user_choice()
-    fetch(sortedByGenre_url + category)
-        .then(response => response.json())
-        .then(data => {
-            for (let i=0; i<6; i++) {
-                var img = document.createElement("img")
-                img.src = data.results[i].image_url
-                img.alt = "image"
-                document.querySelector(".categorie_choisie").appendChild(img)
-            }
-        })
+    let button = document.querySelector(".dropdownmenu .btn");
+    button.addEventListener("click", () => {
+        let select = document.getElementById("categories")
+        let choice = select.selectedIndex  // Récupération de l'index du <option> choisi
+        let user_choice = select.options[choice].text    
+        fetch(sortedByGenre_url + user_choice)
+            .then(response => response.json())
+            .then(data => {
+                for (let i=0; i<6; i++) {
+                    var img = document.createElement("img")
+                    img.src = data.results[i].image_url
+                    img.alt = "image"
+                    document.querySelector(".categorie_choisie").appendChild(img)
+                }
+            })
+    })
 }
 
 
 function main() {
     //Fonction de lancement générale
-
+    
     best_movie()
     defined_category("Sci-Fi", ".categorie_1")
     defined_category("Fantasy", ".categorie_2")
     defined_category("Music", ".categorie_3")
-    get_all_categories()
-    get_user_choice()
-    chosen_category()
+    create_dropdown_menu()
+    // chosen_category()
 }
 
 main()

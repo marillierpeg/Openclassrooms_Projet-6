@@ -1,7 +1,7 @@
 # Projet 6 : Développez une interface utilisateur pour une application web Python
 
 
-## Récupérer le programme
+## 1. Récupérer le programme
 
 Téléchargement du dossier zip:
 [en cliquant ici](https://github.com/marillierpeg/Openclassrooms_Projet-4/archive/refs/heads/main.zip)
