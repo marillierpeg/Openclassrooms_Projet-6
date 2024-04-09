@@ -12,92 +12,100 @@
 <!-- BODY -->
 <body>
     <header id="top-page">
-        <img id="logo" src="Pictures/logo.png" alt="logo Just Stream It"/>
-        <h1>Trouvez Votre Prochain Film</h1>
+        <img id="logo" src="Pictures/logo.png" alt="logo Just Stream It">
+        <h1>Find your next favorite movie !</h1>
     </header>
 
 <!-- MAIN -->
     <main>
         <section>
-            <h2>Meilleur film</h2>
-            <div class="best_movie">
-                <img id="best_movie-image" src="" alt="image">
-                <div class="movie_details">
-                    <h3 id="best_title"></h3>
-                    <p id="best_description"></p>
+            <h2>Best Movie</h2>
+            <div class="best-movie">
+                <img id="best-movie-image" src="Pictures/no_image.jpg" alt="image">
+                <div class="movie-details">
+                    <h3 id="best-title">""</h3>
+                    <p id="best-description"></p>
                 </div>
-                <button class="btn">Details</button>
+                <!-- <button class="btn" id="best-movie-button" data-target="#modal" data-toggle="modal">Details</button> -->
+                <a href="#" role="button" class="btn" id="best-movie-button">Details</a>
             </div>
         </section>
 
         
         <section>
             <h2>Sci-Fi</h2>
-            <div class="categorie_1">
+            <div class="categorie-1">
             </div>
         </section>
 
         <section>
             <h2>Fantasy</h2>
-            <div class="categorie_2">
+            <div class="categorie-2">
             </div>
         </section>
 
         <section>
             <h2>Music</h2>
-            <div class="categorie_3">
+            <div class="categorie-3">
             </div>
         </section>
 
         <section>
-            <h2>Catégorie au choix</h2>
+            <h2 id="user-choice">Your choice</h2>
             <div class="dropdown_wrapper">
-                <div class="dropdown_menu">
-                    <form method="get" action="file:///C:/Users/maril/Desktop/open%20classroom/Projet%206/Projet/Openclassrooms_Projet-6/index.html">
-                        <label for="categories">Quelle catégorie voulez-vous afficher?</label>
+                <div class="dropdown-menu">
+                    <form method="get" action="/index.html">
                         <select name="categories" id="categories">
-                            <option value="" selected></option>
-                            <option value="Action">Action</option>
-                            <option value="Adult">Adult</option>
-                            <option value="Adventure">Adventure</option>
-                            <option value="Animation">Animation</option>
-                            <option value="Biography">Biography</option>
-                            <option value="Comedy">Comedy</option>
-                            <option value="Crime">Crime</option>
-                            <option value="Documentary">Documentary</option>
-                            <option value="Drama">Drama</option>
-                            <option value="Family">Family</option>
-                            <option value="Fantasy">Fantasy</option>
-                            <option value="Film-Noir">Film-Noir</option>
-                            <option value="History">History</option>
-                            <option value="Horror">Horror</option>
-                            <option value="Music">Music</option>
-                            <option value="Musical">Musical</option>
-                            <option value="Mystery">Mystery</option>
-                            <option value="News">News</option>
-                            <option value="Reality-TV">Reality-TV</option>
-                            <option value="Romance">Romance</option>
-                            <option value="Sci-Fi">Sci-Fi</option>
-                            <option value="Sport">Sport</option>
-                            <option value="Thriller">Thriller</option>
-                            <option value="War">War</option>
-                            <option value="Western">Western</option>
+                            <option>Chose your category</option>
                         </select>
-                        <input type="submit" value="Go!" class="btn"/>
                     </form>
                 </div>
             </div>
-            <div class="categorie_choisie">
+            <div class="chosen-category">
             </div>     
         </section>
         
     </main>
 
 <!-- MODAL WINDOW -->
+    <div class="modal" id="modal" role="dialog">
+        <div class="modal-container">
+            <div class="modal-close" data-dismiss="dialog" title="Fermer">X</div>
+            <div class="modal-header">
+                <h3 id="modal-title">Titre du film</h3>
+                <div class="modal-image">
+                    <img alt="movie cover" id="modal-image" src="Pictures/no_image.jpg">
+                </div>
+            </div>
+            <div class="modal-body">
+                <strong>Genre : </strong>
+                <p id="modal-genre"></p>
+                <strong>Release date : </strong>
+                <p id="modal-release"></p>
+                <strong>Rating : </strong>
+                <p id="modal-rating"></p>
+                <strong>Imdb score : </strong>
+                <p id="modal-imdb"></p>
+                <strong>Director : </strong>
+                <p id="modal-director"></p>
+                <strong>Casting : </strong>
+                <p id="modal-casting"></p>
+                <strong>Duration : </strong>
+                <p id="modal-duration"></p>
+                <strong>Origin : </strong>
+                <p id="modal-country"></p>
+                <strong>Box-office results: </strong>
+                <p id="modal-box-office"></p>
+                <strong>Synopsis : </strong>
+                <p id="modal-synopsis"></p>
+            </div>
+        </div>
+    </div>
+
 
 <!-- FOOTER -->
     <footer>
-        <a href="#top-page">Retour en haut de la page</a>
+        <a href="#top-page">Top of the page</a>
     </footer>
 </body>
 </html>

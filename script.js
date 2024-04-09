@@ -2,55 +2,68 @@ const main_url = "http://localhost:8000/api/v1/titles/"
 const sortedByGenre_url = "http://localhost:8000/api/v1/titles/?page_size=6&sort_by=-imdb_score&genre="
 const genre_url = "http://localhost:8000/api/v1/genres/"
 
-
+window.addEventListener('load', () => {
+    best_movie()
+    get_all_categories()
+    defined_category("Sci-Fi", ".categorie-1")
+    defined_category("Fantasy", ".categorie-2")
+    defined_category("Music", ".categorie-3")
+    })
 
 function best_movie() {
     // Fonction qui affiche le film le mieux noté, toutes catégories confondues
 
-    let img = document.getElementById("best_movie-image")
-    let bestTitle = document.getElementById("best_title")
-    let best_description = document.getElementById("best_description")
-
+    let img = document.getElementById("best-movie-image")
+    let bestTitle = document.getElementById("best-title")
+    let bestDescription = document.getElementById("best-description")
+    let button = document.getElementById("best-movie-button")
 
     fetch(main_url + "?sort_by=-imdb_score")
         .then(response => response.json())
         .then(data => {
+            img.onerror = function() {
+                // En cas d'erreur de chargement de l'image, définir l'image par défaut
+                this.src = "Pictures/no_image.jpg"
+            }    
             img.src = data.results[0].image_url
             bestTitle.innerHTML = data.results[0].title
-            best_description.innerHTML = data.description
             fetch(data.results[0].url)
                     .then(response => response.json())
                     .then(data => {
-                        best_description.innerHTML = data.description;
-                    });
+                        bestDescription.innerHTML = data.long_description
+                    })
+            let best_film_id = data.results[0].id
+            button.addEventListener("click", () => {
+                modalWindow(best_film_id)
+            })
         })
 }
 
-
-
-function defined_category(category_name, classe) {
-    //Fonction qui affiche les 6 meilleurs films d'une catégroie donnée
-
-    // let titre = document.querySelector(classe + "h2")
-    fetch(sortedByGenre_url + category_name)
-        .then(response => response.json())
-        .then(data => {
-            for (let i=0; i<6; i++) {
-                var img = document.createElement("img")
-                img.src = data.results[i].image_url
-                img.alt = "image"
-                document.querySelector(classe).appendChild(img)
-            }
-            
+function create_image_zone(domElement, datas) {
+    for (let i=0; i<6; i++) {
+        let img = document.createElement("img")
+        img.onerror = function() {
+            // En cas d'erreur de chargement de l'image, définir l'image par défaut
+            this.src = "Pictures/no_image.jpg"
+        }
+        img.src = datas.results[i].image_url
+        img.alt = "image"
+        img.id = datas.results[i].id
+        img.addEventListener("click", () => {
+            modalWindow(img.id)
         })
+        domElement.appendChild(img)
+        
+    }
+
 }
 
 
-async function get_all_categories() {
-    //Fonction qui récupère et retourne la liste de toutes les catégories de films
+function get_all_categories() {
+    //Fonction qui récupère la liste de toutes les catégories de films
 
     let liste_genres = []
-    await fetch("http://localhost:8000/api/v1/genres")
+    fetch("http://localhost:8000/api/v1/genres")
         .then(response => response.json())
         .then(data => {
             let url = "http://localhost:8000/api/v1/genres/?page_size="
@@ -60,84 +73,87 @@ async function get_all_categories() {
                 .then(data => {
                     for(i=0; i<nb_genre; i++) {
                         let genre = data.results[i].name
-                        console.log("---" + data.results[i] + "---" + data.results[i].name)
                         liste_genres.push(genre)
                     }
+                    create_dropdown_menu(liste_genres)
                 })
         })
-    console.log(liste_genres)
-    console.log(liste_genres.length)
-    console.log(liste_genres[5])
-    console.log("---")
-
-    return liste_genres
 }
 
-async function create_dropdown_menu() {
-    let categories = await get_all_categories()
-    console.log(categories)
-    console.log(categories.length)
-    console.log(categories[5])
-    console.log("---")
-    let truc = ["a","b","c"]
-    for(i=0; i<50; i++) {
-        truc.push(`${i}`)
-    }
-    console.log(truc)
-    console.log(truc.length)
-    console.log(truc[2])
-    console.log("---")
+
+function defined_category(category_name, classe) {
+    //Fonction qui affiche les 6 meilleurs films d'une catégroie donnée
+   
+    fetch(sortedByGenre_url + category_name)
+        .then(response => response.json())
+        .then(data => {
+            const filmsCategory = document.querySelector(classe)
+            create_image_zone(filmsCategory, data)
+        })
+}
+
+function create_dropdown_menu(liste_genres) {
+    // Fonction qui créé un menu déroulant avec la liste des catégories
     let selection = document.getElementById("categories")
-    console.log(selection.innerHTML)
-    for(i=0; i<categories.length; i++) {
-        let options = `<option value="">${categories[i]}</option>`
+    for(i=0; i<liste_genres.length; i++) {
+        let options = `<option value="${liste_genres[i]}">${liste_genres[i]}</option>`
         selection.innerHTML += options
-        console.log(categories[i])
     }
-    console.log("---")
-    console.log(selection.innerHTML)
+    chosen_category()
 }
 
-function get_user_choice(){
-    //Fonction qui récupère le choix de l'utilisateur dans le menu déroulant
-
-    let select = document.getElementById("categories")
-    let choice = select.selectedIndex  // Récupération de l'index du <option> choisi
-    let user_choice = select.options[choice].text
-    return user_choice
-}
 
 function chosen_category() {
-    // Fonction qui affiche les 6 meilleurs films de la catégorie de films
-    // choisie par l'utilisateur via le menu déroulant
-    let button = document.querySelector(".dropdownmenu .btn");
-    button.addEventListener("click", () => {
-        let select = document.getElementById("categories")
-        let choice = select.selectedIndex  // Récupération de l'index du <option> choisi
-        let user_choice = select.options[choice].text    
-        fetch(sortedByGenre_url + user_choice)
-            .then(response => response.json())
-            .then(data => {
-                for (let i=0; i<6; i++) {
-                    var img = document.createElement("img")
-                    img.src = data.results[i].image_url
-                    img.alt = "image"
-                    document.querySelector(".categorie_choisie").appendChild(img)
-                }
-            })
+    let formulaire = document.querySelector("select")
+    let category_title = document.getElementById("user-choice")
+    formulaire.addEventListener("change", event => {
+        let choice = event.target.value
+        fetch(sortedByGenre_url + choice)
+        .then(response => response.json())
+        .then(data => {
+            const chosenCategory = document.querySelector(".chosen-category")
+            chosenCategory.innerHTML = ""
+            create_image_zone(chosenCategory, data)
+        })
     })
 }
 
 
-function main() {
-    //Fonction de lancement générale
-    
-    best_movie()
-    defined_category("Sci-Fi", ".categorie_1")
-    defined_category("Fantasy", ".categorie_2")
-    defined_category("Music", ".categorie_3")
-    create_dropdown_menu()
-    // chosen_category()
-}
+function modalWindow(id_film) {
+    fetch(main_url + id_film)
+        .then(response => response.json())
+        .then(data => {
 
-main()
+            document.getElementById("modal-image").onerror = function() {
+                // En cas d'erreur de chargement de l'image, définir l'image par défaut
+                this.src = "Pictures/no_image.jpg.jpg"
+            }
+            document.getElementById("modal-image").src = data.image_url
+            document.getElementById("modal-title").innerHTML = data.title
+            document.getElementById("modal-genre").innerHTML = data.genres
+            document.getElementById("modal-release").innerHTML = data.date_published
+            document.getElementById("modal-rating").innerHTML = data.rated
+            document.getElementById("modal-imdb").innerHTML = data.imdb_score + " / 10"
+            document.getElementById("modal-director").innerHTML = data.directors
+            document.getElementById("modal-casting").innerHTML = data.actors
+            document.getElementById("modal-duration").innerHTML = data.duration + " min"
+            document.getElementById("modal-country").innerHTML = data.countries
+            let modalBoxOffice = document.getElementById("modal-box-office")
+            // Affiche "N/A" si l'élément est vide
+            if (data.worldwide_gross_income == null) {
+                modalBoxOffice.innerHTML = "N/A"
+            } else  {
+                modalBoxOffice.innerHTML = data.worldwide_gross_income.toLocaleString() + " " + data.budget_currency
+            }
+            document.getElementById("modal-synopsis").innerHTML = data.long_description
+        })
+        // Rend la modale visible
+        let modal = document.getElementById("modal")
+        modal.classList.add("show")
+
+        // Rend la modale invisible au clic sur le X
+        const modalClose = modal.querySelector("[data-dismiss=dialog]")
+        modalClose.addEventListener("click", () => {
+            modal.classList.remove("show")
+        })    
+}
