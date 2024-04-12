@@ -1,0 +1,111 @@
+
+/* Règles d'affichage pour smartphone */
+
+@media screen and (max-width: 479px) {
+#logo {
+        height: 100px;
+        width: 135px
+    }
+
+    header h1{
+        display: none;
+    }
+    
+    .best-movie .btn {
+        bottom: 10px;
+        position: unset;
+        padding: 25px 20px 15px 20px;
+    }
+    .best-movie {
+        flex-direction: column;
+        max-width: 60%;
+    }
+
+    #best-description {
+        font-size: small;
+        max-width: none;
+        margin: auto;
+    }
+    .best-movie img {
+        margin: auto;
+    }
+
+    .movie-details {
+        max-width: 80%;
+    }
+
+    .see-more-btn {
+        visibility: visible;
+        display: block;   
+    }
+
+    #categorie-1, #categorie-2, #categorie-3, #chosen-category{
+        grid-template-columns: auto;
+        gap: 10px;
+    }
+
+    #categorie-1 :nth-child(n+3), 
+    #categorie-2 :nth-child(n+3), 
+    #categorie-3 :nth-child(n+3), 
+    #chosen-category :nth-child(n+3) {
+        position: relative;
+        display: none;
+               
+    }
+
+    #categorie-1 .active :nth-child(n3), 
+    #categorie-2 .active :nth-child(n+3), 
+    #categorie-3 .active :nth-child(n+3), 
+    #chosen-category .active :nth-child(n+3) {
+        grid-template-columns: auto;
+        position: relative;
+        
+    }
+}
+
+/* Règles d'affichage pour tablette */
+
+@media screen and (max-width: 1025px) and (min-width: 480px) {
+    h1, h2 {
+        font-size: x-large;
+    }
+
+    #logo {
+        height: 100px;
+        width: 135px
+    }
+
+    .see-more-btn {
+        visibility: visible;      
+    }
+
+    #categorie-1, #categorie-2, #categorie-3, #chosen-category {
+        grid-template-columns: auto auto;
+    }
+
+    #categorie-1 :nth-child(n+5), 
+    #categorie-2 :nth-child(n+5), 
+    #categorie-3 :nth-child(n+5), 
+    #chosen-category :nth-child(n+5) {
+        position: relative;
+        display: none;
+    }
+
+    #categorie-1.active img:nth-child(n), 
+    #categorie-2.active img:nth-child(n), 
+    #categorie-3.active img:nth-child(n), 
+    #chosen-category.active img:nth-child(n) {
+        display: block;
+    }
+
+
+    /* .movie :nth-child(n+5) {
+        position: relative;
+        display: none;
+    }   */
+
+    /* .movie.active img:nth-child(n) {
+        display: block;
+    } */
+    
+}

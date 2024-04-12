@@ -3,14 +3,14 @@ const sortedByGenre_url = "http://localhost:8000/api/v1/titles/?page_size=6&sort
 const genre_url = "http://localhost:8000/api/v1/genres/"
 
 window.addEventListener('load', () => {
-    best_movie()
-    get_all_categories()
-    defined_category("Sci-Fi", ".categorie-1")
-    defined_category("Fantasy", ".categorie-2")
-    defined_category("Music", ".categorie-3")
+    bestMovie()
+    getAllCategories()
+    definedCategory("Sci-Fi", "categorie-1")
+    definedCategory("Fantasy", "categorie-2")
+    definedCategory("Music", "categorie-3")
     })
 
-function best_movie() {
+function bestMovie() {
     // Fonction qui affiche le film le mieux noté, toutes catégories confondues
 
     let img = document.getElementById("best-movie-image")
@@ -39,7 +39,17 @@ function best_movie() {
         })
 }
 
-function create_image_zone(domElement, datas) {
+
+function seeMoreButton(domElement) {
+    const seeMoreBtn = document.querySelectorAll(".see-more-btn")
+    for (let i=0 ; i<seeMoreBtn.length; i++) {
+        seeMoreBtn[i].addEventListener("click", () => {
+            domElement.classList.toggle("active")
+        })
+    }
+}
+
+function createImageZone(domElement, datas) {
     for (let i=0; i<6; i++) {
         let img = document.createElement("img")
         img.onerror = function() {
@@ -53,13 +63,12 @@ function create_image_zone(domElement, datas) {
             modalWindow(img.id)
         })
         domElement.appendChild(img)
-        
     }
-
+    seeMoreButton(domElement)
 }
 
 
-function get_all_categories() {
+function getAllCategories() {
     //Fonction qui récupère la liste de toutes les catégories de films
 
     let liste_genres = []
@@ -75,45 +84,46 @@ function get_all_categories() {
                         let genre = data.results[i].name
                         liste_genres.push(genre)
                     }
-                    create_dropdown_menu(liste_genres)
+                    createDropdownMenu(liste_genres)
                 })
         })
 }
 
 
-function defined_category(category_name, classe) {
+function definedCategory(category_name, id_category) {
     //Fonction qui affiche les 6 meilleurs films d'une catégroie donnée
-   
     fetch(sortedByGenre_url + category_name)
         .then(response => response.json())
         .then(data => {
-            const filmsCategory = document.querySelector(classe)
-            create_image_zone(filmsCategory, data)
+            const filmsCategory = document.getElementById(id_category)
+            createImageZone(filmsCategory, data)
         })
 }
 
-function create_dropdown_menu(liste_genres) {
+function createDropdownMenu(liste_genres) {
     // Fonction qui créé un menu déroulant avec la liste des catégories
     let selection = document.getElementById("categories")
     for(i=0; i<liste_genres.length; i++) {
         let options = `<option value="${liste_genres[i]}">${liste_genres[i]}</option>`
         selection.innerHTML += options
     }
-    chosen_category()
+    chosenCategory()
 }
 
 
-function chosen_category() {
+function chosenCategory() {
     let formulaire = document.querySelector("select")
-    let category_title = document.getElementById("user-choice")
+    let categoryTitle = document.getElementById("user-choice")
     formulaire.addEventListener("change", event => {
+        event.preventDefault()
         let choice = event.target.value
         fetch(sortedByGenre_url + choice)
         .then(response => response.json())
         .then(data => {
-            const chosenCategory = document.querySelector(".chosen-category")
+            const chosenCategory = document.getElementById("chosen-category")
             chosenCategory.innerHTML = ""
-            create_image_zone(chosenCategory, data)
+            categoryTitle.innerHTML = choice
+            createImageZone(chosenCategory, data)
         })
     })
 }
@@ -126,7 +136,7 @@ function modalWindow(id_film) {
 
             document.getElementById("modal-image").onerror = function() {
                 // En cas d'erreur de chargement de l'image, définir l'image par défaut
-                this.src = "Pictures/no_image.jpg.jpg"
+                this.src = "Pictures/no_image.jpg"
             }
             document.getElementById("modal-image").src = data.image_url
             document.getElementById("modal-title").innerHTML = data.title
