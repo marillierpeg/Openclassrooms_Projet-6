@@ -53,12 +53,11 @@
                
     }
 
-    #categorie-1 .active :nth-child(n3), 
-    #categorie-2 .active :nth-child(n+3), 
-    #categorie-3 .active :nth-child(n+3), 
-    #chosen-category .active :nth-child(n+3) {
-        grid-template-columns: auto;
-        position: relative;
+    #categorie-1.active img:nth-child(n), 
+    #categorie-2.active img:nth-child(n), 
+    #categorie-3.active img:nth-child(n), 
+    #chosen-category.active img:nth-child(n) {
+        display: block;
         
     }
 }
@@ -97,15 +96,4 @@
     #chosen-category.active img:nth-child(n) {
         display: block;
     }
-
-
-    /* .movie :nth-child(n+5) {
-        position: relative;
-        display: none;
-    }   */
-
-    /* .movie.active img:nth-child(n) {
-        display: block;
-    } */
-    
 }

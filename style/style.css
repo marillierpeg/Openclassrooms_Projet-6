@@ -130,7 +130,7 @@ h2 {
     grid-template-columns: auto auto auto;
     gap: 10px;
     justify-content: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 #categorie-1 img, #categorie-2 img, #categorie-3 img, #chosen-category img {
@@ -159,6 +159,7 @@ select, option {
 
 footer {
     text-align: center;
+    margin-top: 50px;
 }
 footer a {
     color: var(--cream_color);

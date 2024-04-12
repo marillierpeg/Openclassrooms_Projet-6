@@ -41,6 +41,7 @@ function bestMovie() {
 
 
 function seeMoreButton(domElement) {
+    // fonction qui ajoute un évènement au clic des boutons "see more"
     const seeMoreBtn = document.querySelectorAll(".see-more-btn")
     for (let i=0 ; i<seeMoreBtn.length; i++) {
         seeMoreBtn[i].addEventListener("click", () => {
@@ -50,6 +51,7 @@ function seeMoreButton(domElement) {
 }
 
 function createImageZone(domElement, datas) {
+    // fonction qui crée une zone de 6 images
     for (let i=0; i<6; i++) {
         let img = document.createElement("img")
         img.onerror = function() {
