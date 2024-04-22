@@ -40,14 +40,19 @@ function bestMovie() {
 }
 
 
-function seeMoreButton(domElement) {
+function seeMoreButton() {
     // fonction qui ajoute un évènement au clic des boutons "see more"
     const seeMoreBtn = document.querySelectorAll(".see-more-btn")
     for (let i=0 ; i<seeMoreBtn.length; i++) {
-        seeMoreBtn[i].addEventListener("click", () => {
-            domElement.classList.toggle("active")
-        })
+        seeMoreBtn[i].addEventListener("click", seeMoreButtonClick)
     }
+}
+
+function seeMoreButtonClick() {
+    // gère l'évènement click de chaque bouton
+    const number = this.id.substr(this.id.length - 1, 1)
+    const categoryDiv = document.getElementById("categorie-" + number)
+    categoryDiv.classList.toggle("active")
 }
 
 function createImageZone(domElement, datas) {
@@ -93,7 +98,7 @@ function getAllCategories() {
 
 
 function definedCategory(category_name, id_category) {
-    //Fonction qui affiche les 6 meilleurs films d'une catégroie donnée
+    //Fonction qui affiche les 6 meilleurs films d'une catégorie donnée
     fetch(sortedByGenre_url + category_name)
         .then(response => response.json())
         .then(data => {
