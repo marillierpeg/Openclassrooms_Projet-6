@@ -49,7 +49,7 @@ function seeMoreButton() {
 }
 
 function seeMoreButtonClick() {
-    // gère l'évènement click de chaque bouton
+    // gère l'évènement click de chaque bouton"see-more"
     const number = this.id.substr(this.id.length - 1, 1)
     const categoryDiv = document.getElementById("categorie-" + number)
     categoryDiv.classList.toggle("active")
