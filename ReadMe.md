@@ -1,6 +1,6 @@
 ## *Compétences acquises durant la réalisation ce projet :*
 - Développer la partie Front-End d'une application avec HTML, CSS et Javascript
-- Intégragir avec une API Rest
+- Interagir avec une API Rest
 
 # Projet 6 : Développez une interface utilisateur pour une application web Python
 
